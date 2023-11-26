@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser =require('body-parser');
+const cors = require("cors");
+
 
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
@@ -11,7 +13,11 @@ mongoose.Promise = global.Promise;
 
 const app = express(); // create express app
 
-app.use(bodyParser.urlencoded({extended: true})); // parse requests of content-type - application/x-www-form-urlencoded
+
+// setting cors policy
+app.use(cors());
+
+app.use(bodyParser.urlencoded({extended: false})); // parse requests of content-type - application/x-www-form-urlencoded
 
 app.use(bodyParser.json()); // parse requests of content-type - application/json
 
