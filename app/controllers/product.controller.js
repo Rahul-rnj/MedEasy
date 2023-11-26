@@ -1,13 +1,30 @@
+
+
+var fs = require('fs');
+var path = require('path');
+var constant = require('../constants/contant.js');
 const Product = require('../models/product.model.js');
 
+
+
+// image uploading
+
+
+
+//
+
+
+
 // Create and Save a new Product
-exports.create = (req, res) => {
+exports.create = (req, res, next) => {
     // Validate request
     console.log("inside creates")
     console.log(req.body.title);
     console.log(req.body.description);
     console.log(req.body.price);
     console.log(req.body.category);
+
+    console.log(constant.UPLOAD_PROD_IMG_DIR)
 
     //TODO validate request body
     // if (!req.body.title) {
@@ -17,23 +34,25 @@ exports.create = (req, res) => {
     // }
 
     // Create a Product
-    const product = new Product({
+
+    var obj = {
         title: req.body.title ,
         description: req.body.description || "No descrition",
         price: req.body.price,
-        category: req.body.category
-
-    });
-
-    // Save Note in the database
-    product.save()
-        .then(_ => {
-            res.status(201).send('Product saved successfully.');
-        }).catch(err => {
-            res.send(500).send({
-                message: err.message || "Something went wrong!"
+        category: req.body.category,
+        image: {
+            data: fs.readFileSync(path.join(constant.UPLOAD_PROD_IMG_DIR +'/'+ req.file.filename)),
+            contentType: 'image/png'
+        }
+    }
+    Product.create(obj)
+       .then(_ => {
+                res.status(201).send('Product saved successfully.');
+            }).catch(err => {
+                res.send(500).send({
+                    message: err.message || "Something went wrong!"
+                });
             });
-        });
 
 };
 
