@@ -6,19 +6,10 @@ var constant = require('../constants/contant.js');
 const Product = require('../models/product.model.js');
 
 
-
-// image uploading
-
-
-
-//
-
-
-
 // Create and Save a new Product
 exports.create = (req, res, next) => {
     // Validate request
-    console.log("inside creates")
+
     console.log(req.body.title);
     console.log(req.body.description);
     console.log(req.body.price);
@@ -26,12 +17,9 @@ exports.create = (req, res, next) => {
 
     console.log(constant.UPLOAD_PROD_IMG_DIR)
 
-    //TODO validate request body
-    // if (!req.body.title) {
-    //     return res.status(400).send({
-    //         message: "Product title can not be empty"
-    //     });
-    // }
+    if (!req.body.title || !req.body.description || !req.body.price || !req.body.category) {
+        return res.status(400).send('Name, email, and password, category are required');
+      }
 
     // Create a Product
 
@@ -56,7 +44,7 @@ exports.create = (req, res, next) => {
 
 };
 
-// Retrieve and return all notes from the database.
+// Retrieve and return all product from the database.
 exports.findAll = (req, res) => {
 
     Product.find()
@@ -70,7 +58,7 @@ exports.findAll = (req, res) => {
 
 };
 
-// // Find a single product with a product id
+// Find a single product with a product id
 exports.findOne = (req, res) => {
 
     Product.findById(req.params.productId)
@@ -93,7 +81,7 @@ exports.findOne = (req, res) => {
         });
 };
 
-// Update a note identified by the noteId in the request
+// Update a product identified by the productId in the request
 exports.update = (req, res) => {
 
     //TODO validate request body
@@ -107,7 +95,7 @@ exports.update = (req, res) => {
     // Find product and update it with the request body
     Product.findByIdAndUpdate(req.params.productId, {
         title: req.body.title ,
-        description: req.body.description || "No descrition",
+        description: req.body.description || "No description",
         price: req.body.price,
         category: req.body.category
     }, { new: true }) //The {new: true} option in the findByIdAndUpdate() method is used to return the modified document to the then() function instead of the original.
@@ -151,7 +139,7 @@ exports.delete = (req, res) => {
                 });
             }
             return res.status(500).send({
-                message: "Could not delete note! "
+                message: "Could not delete product! "
             });
         });
 };

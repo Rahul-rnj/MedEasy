@@ -21,8 +21,11 @@ app.use(bodyParser.urlencoded({extended: false})); // parse requests of content-
 
 app.use(bodyParser.json()); // parse requests of content-type - application/json
 
-// Require Notes routes
+// Require products routes
 require('./app/routes/product.routes.js')(app);
+
+//require user routes
+require('./app/routes/user.routes.js')(app);
 
 //creating simple route for get request
 app.get('/', (req, res)=>{
